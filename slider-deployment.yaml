@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slider-deployment
+  labels:
+    app: slider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slider
+  template:
+    metadata:
+      labels:
+        app: slider
+    spec:
+      containers:
+      - name: slider-container
+        image: omakrkashyap/slider:latest
+        ports:
+        - containerPort: 80 # Replace with the port your app listens on inside the container
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: slider-service
+  labels:
+    app: slider
+spec:
+  type: NodePort
+  selector:
+    app: slider
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30066 # NodePort to expose
+
